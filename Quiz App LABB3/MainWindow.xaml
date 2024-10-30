@@ -20,7 +20,7 @@
 
         <WrapPanel Orientation="Horizontal" Grid.Row="1">
             <view:PlayerView />
-            <view:ConfigurationView />
+            <view:ConfigurationView Margin="10" />
         </WrapPanel>
       
 

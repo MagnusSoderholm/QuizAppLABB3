@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Quiz_App_LABB3.Command;
+using Quiz_App_LABB3.Model;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -16,14 +18,17 @@ using System.Windows.Shapes;
 namespace Quiz_App_LABB3.View
 {
     /// <summary>
-    /// Interaction logic for MenuView.xaml
+    /// Interaction logic for NewQuestionPackView.xaml
     /// </summary>
-    public partial class MenuView : UserControl
+    public partial class NewQuestionPackView : UserControl
     {
-        public MenuView()
+        public NewQuestionPackView()
         {
             InitializeComponent();
+      
         }
-        
+
+       
+
     }
 }
