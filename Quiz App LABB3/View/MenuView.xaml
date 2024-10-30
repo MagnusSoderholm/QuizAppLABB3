@@ -11,7 +11,7 @@
         <Menu>
             <MenuItem Header="_File">
 
-                <MenuItem Header="_New Question Pack" Icon="{fa:Icon fileImport}" Click="{Binding ElementName=NewQuestionPack}" />
+                <MenuItem Header="_New Question Pack" Icon="{fa:Icon fileImport}" />
                 <MenuItem Header="_Select Question Pack" Icon="{fa:Icon folderOpen}"/>
                 <MenuItem Header="_Delete Question Pack" Icon="{fa:Icon folderMinus}"/>
 
