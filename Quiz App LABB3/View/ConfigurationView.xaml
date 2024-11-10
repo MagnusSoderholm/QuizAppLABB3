@@ -4,23 +4,78 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Quiz_App_LABB3.View"
+              xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp" xmlns:viewmodel="clr-namespace:Quiz_App_LABB3.ViewModel" d:DataContext="{d:DesignInstance Type=viewmodel:MainWindowViewModel}"
              DataContext="{Binding ConfigurationViewModel}"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="400">
+             d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
 
-        <ListBox>
-            
-            
-        </ListBox>
+      
+
+        <!--<Grid.RowDefinitions>
+            <RowDefinition Height="30"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>-->
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        
+        <ListBox/>
 
         <StackPanel>
-            <Label  Width="300" 
+
+            <StackPanel Grid.Column="0" Orientation="Horizontal" Width="400" HorizontalAlignment="Left">
+            
+            <Label Width="300" 
+                   Content="{Binding ActivePack.Name}" 
+                   Margin="2" 
+                   FontWeight="Bold" />
+
+            <StackPanel Margin="25,0,0,0" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom">
+                <Button Content="{fa:Icon sliders}" 
+                        Margin="1,5"
+                        Command="{Binding  EditOptionsCommand}"/>
+                
+                    <Button Content="{fa:Icon plus}" 
+                            Margin="1,5" 
+                            Command="{Binding AddQuestionCommand}" />
+                
+                <Button Content="{fa:Icon minus}" 
+                        Margin="1,5" 
+                        IsEnabled="{Binding IsEnabled}" 
+                        Command="{Binding RemoveQuestionCommand}" />
+                
+            </StackPanel>
+            
+        </StackPanel>
+
+            <ListBox
+                SelectedItem="{Binding SelectedItem}"
+                ItemsSource="{Binding ActivePack.Questions}">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <StackPanel Grid.Column="0">
+                            <Label Content="Question:" FontWeight="Bold" />
+                            <Label Content="{Binding Query, Mode=TwoWay}"/>
+
+                        </StackPanel>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListBox>
+
+
+        </StackPanel>
+
+        
+        
+        <StackPanel x:Name="myStackPanel" Margin="5" Grid.Column="1">
+                <Label  Width="300" 
                     Content="Question" 
                     Margin="5" 
                     HorizontalAlignment="Left" 
                     FontWeight="Bold"
-                    Visibility="{Binding ElementName=MyStackpanel, Path=Visibility, Mode=TwoWay}"/>
+                        />
 
        
             <TextBox Width="300" 
@@ -28,11 +83,11 @@
                      Margin="5,5,5,10" 
                      HorizontalAlignment="Left"
                      Text="{Binding SelectedItem.Query, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"
-                     Visibility="{Binding ElementName=MyStackpanel, Path=Visibility, Mode=TwoWay}"/>
+                     />
 
 
 
-            <StackPanel x:Name="myStackpanel">
+            <StackPanel>
                 <Label Width="300" 
                    Content="Correct Answer:" 
                    Margin="5,1" 
@@ -47,39 +102,46 @@
 
 
             <Label Width="300" 
-                   Content="First Wrong Question:" 
+                   Content="First Incorrect Answer:" 
                    Margin="5,1" HorizontalAlignment="Left" 
                    FontWeight="Bold"
                    />
             <TextBox  Width="300" 
                       HorizontalAlignment="Left" 
-                      Margin="5,0"/>
+                      Margin="5,0"
+                      Text="{Binding SelectedItem.IncorrectAnswers[0], Mode=TwoWay}"/>
             
 
             <Label Width="300" 
-                   Content="Second Wrong Question:" 
+                   Content="Second Incorrect Answer:" 
                    Margin="5,1" 
                    HorizontalAlignment="Left" 
                    FontWeight="Bold"
                    />
             <TextBox  Width="300" 
                       HorizontalAlignment="Left" 
-                      Margin="5,0"/>
+                      Margin="5,0"
+                      Text="{Binding SelectedItem.IncorrectAnswers[1], Mode=TwoWay}"/>
             
 
             <Label Width="300" 
-                   Content="Third Wrong Question:"
+                   Content="Third Incorrect Answer:"
                    Margin="5,1" 
                    HorizontalAlignment="Left" 
                    FontWeight="Bold"
                    />
             <TextBox  Width="300" 
                       HorizontalAlignment="Left" 
-                      Margin="5,0"/>
+                      Margin="5,0"
+                      Text="{Binding SelectedItem.IncorrectAnswers[2], Mode=TwoWay}"/>
 
             </StackPanel>
 
         </StackPanel>
-            
+
+        
+     
+
+
     </Grid>
 </UserControl>

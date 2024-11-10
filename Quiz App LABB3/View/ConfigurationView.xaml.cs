@@ -1,4 +1,6 @@
-﻿using System;
+﻿using Quiz_App_LABB3.Dialogs;
+using Quiz_App_LABB3.ViewModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -23,6 +25,10 @@ namespace Quiz_App_LABB3.View
         public ConfigurationView()
         {
             InitializeComponent();
+           
         }
+
+      
+
     }
 }

@@ -9,6 +9,9 @@
     <Window.InputBindings>
         <KeyBinding Key="U" Modifiers="Ctrl" Command="{Binding PlayerViewModel.UpdateButtonCommand}" />
     </Window.InputBindings>
+    <Window.Resources>
+        <BooleanToVisibilityConverter x:Key="boolToVisibilityConverter" />
+    </Window.Resources>
     
     <Grid>
         <Grid.RowDefinitions>
@@ -19,8 +22,8 @@
         <view:MenuView Grid.Row="0" />
 
         <WrapPanel Orientation="Horizontal" Grid.Row="1">
-            <view:PlayerView />
-            <view:ConfigurationView Margin="10" />
+            <view:PlayerView Margin="10" Visibility="{Binding IsPlayerVisible, Converter={StaticResource boolToVisibilityConverter}}"/>
+            <view:ConfigurationView Margin="10" Visibility="{Binding IsConfigurationVisible, Converter={StaticResource boolToVisibilityConverter}}"/>
         </WrapPanel>
       
 

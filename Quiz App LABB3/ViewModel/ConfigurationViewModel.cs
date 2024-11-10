@@ -1,4 +1,5 @@
 ﻿using Quiz_App_LABB3.Command;
+using Quiz_App_LABB3.Dialogs;
 using Quiz_App_LABB3.Model;
 using System;
 using System.Collections.Generic;
@@ -16,51 +17,67 @@ namespace Quiz_App_LABB3.ViewModel
     {
         private readonly MainWindowViewModel? mainWindowViewModel;
 
-        public DelegateCommand AddButtonCommand { get; }
-        public DelegateCommand RemoveButtonCommand { get; }
+        public Visibility VisibilityMode { get; }
+        public DelegateCommand AddQuestionCommand { get; }
+        public DelegateCommand RemoveQuestionCommand { get; }
+        public DelegateCommand EditOptionsCommand { get; }
 
 
-        public QuestionPackViewModel? ActivePack => mainWindowViewModel.ActivePack; 
+
+        public QuestionPackViewModel? ActivePack => mainWindowViewModel.ActivePack;
+
 
 
         public ConfigurationViewModel(MainWindowViewModel? mainWindowViewModel)
         {
             this.mainWindowViewModel = mainWindowViewModel;
-        //    VisibilityMode = Visibility.Hidden;
-            IsEnabled = false;
+           
+            VisibilityMode = Visibility.Visible;
+            IsEnabled = true;
 
-            AddButtonCommand = new DelegateCommand(AddButton);
-            RemoveButtonCommand = new DelegateCommand(RemoveButton, RemoveButtonActive);
+            EditOptionsCommand = new DelegateCommand(EditOptions);
 
-            ActivePack.Questions.Add(new Question("Question abc", "a", "b", "c", "d"));
+
+            IsConfigurationVisible = true;
+            IsPlayerVisible = false;
+
+
+            AddQuestionCommand = new DelegateCommand(AddQuestion);
+            RemoveQuestionCommand = new DelegateCommand(RemoveQuestion, RemoveQuestionActive);
+
+            ActivePack.Questions.Add(new Question("New Question", "", "", "", ""));
             SelectedItem = ActivePack.Questions.FirstOrDefault();
 
-
+            
         }
 
 
-        private bool RemoveButtonActive(object? arg)
+        private bool RemoveQuestionActive(object? arg)
         {
 
             if (IsEnabled) return true;
             else return false;
         }
 
-        private void RemoveButton(object obj)
+        private void RemoveQuestion(object obj)
         {
             ActivePack.Questions.Remove(SelectedItem);
 
-            RemoveButtonCommand.RaiseCanExecuteChanged();
+            RemoveQuestionCommand.RaiseCanExecuteChanged();
         }
 
-        private void AddButton(object obj)
+        private void AddQuestion(object obj)
         {
-            //VisibilityMode = Visibility.Visible;
-            ActivePack.Questions.Add(new Question(Query, CorrectAnswer, IncorrectAnswer1, IncorrectAnswer3, IncorrectAnswer3));
-
-            AddButtonCommand.RaiseCanExecuteChanged();
+            AddQuestion(obj, VisibilityMode);
         }
 
+        private void AddQuestion(object obj, Visibility visibilityMode)
+        {
+            visibilityMode = Visibility.Visible;
+            ActivePack.Questions.Add(new Question("New Question","","","",""));
+
+            AddQuestionCommand.RaiseCanExecuteChanged();
+        }
 
         private Question? _selectedItem;
 
@@ -88,67 +105,7 @@ namespace Quiz_App_LABB3.ViewModel
         }
 
 
-        private string _query;
-
-        public string Query
-        {
-            get => SelectedItem.Query;
-            set
-            {
-                SelectedItem.Query = value;
-                RaisePropertyChanged();
-                RaisePropertyChanged("SelectedItem");
-                RaisePropertyChanged(nameof(ActivePack));
-            }
-        }
-
-        private string _correctAnswer;
-
-        public string CorrectAnswer
-        {
-            get => _correctAnswer;
-            set
-            {
-                _correctAnswer = value;
-                RaisePropertyChanged();
-            }
-        }
-
-        private string _incorrectAnswer1;
-
-        public string IncorrectAnswer1
-        {
-            get => _incorrectAnswer1;
-            set
-            {
-                _incorrectAnswer1 = value;
-                RaisePropertyChanged();
-            }
-        }
-
-        private string _incorrectAnswer2;
-
-        public string IncorrectAnswer2
-        {
-            get => _incorrectAnswer2;
-            set
-            {
-                _incorrectAnswer2 = value;
-                RaisePropertyChanged();
-            }
-        }
-
-        private string _incorrectAnswer3;
-
-        public string IncorrectAnswer3
-        {
-            get => _incorrectAnswer3;
-            set
-            {
-                _incorrectAnswer3 = value;
-                RaisePropertyChanged();
-            }
-        }
+       
 
         private bool _isEnabled;
 
@@ -165,24 +122,54 @@ namespace Quiz_App_LABB3.ViewModel
 
         private string _activePack;
 
-        public string ActivePack
+
+
+
+
+
+
+
+        private bool _isPlayerVisible;
+
+        public bool IsPlayerVisible
         {
-            get => _activePack;
+            get => !_isPlayerVisible;
             set
             {
-                _activePack = value;
+
+                _isPlayerVisible = value;
                 RaisePropertyChanged();
+                RaisePropertyChanged(nameof(IsConfigurationVisible));
             }
         }
 
 
-        public MainWindowViewModel()
+        public bool IsConfigurationVisible
         {
-            ConfigurationViewModel = new ConfigurationViewModel(this);
-            PlayerViewModel = new PlayerViewModel(this);
+            get => !_isPlayerVisible;
+            set
+            {
 
-            ActivePack = new QuestionPackViewModel(new QuestionPack("Default Question Pack"));
+                _isPlayerVisible = !value;
+                RaisePropertyChanged();
+                RaisePropertyChanged(nameof(IsPlayerVisible));
+            }
         }
+
+
+        private void EditOptions(object obj)
+        {
+            var window = new EditQuestionPackWindow();
+            window.ShowDialog();
+        }
+
+
+        //public MainWindowViewModel()
+        //{
+        //    ActivePack = new QuestionPackViewModel(new QuestionPack("Default Question Pack"));
+        //    ConfigurationViewModel = new ConfigurationViewModel(this);
+        //    PlayerViewModel = new PlayerViewModel(this);
+        //}
 
     }
 

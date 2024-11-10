@@ -1,0 +1,51 @@
+﻿<Window x:Class="Quiz_App_LABB3.Dialogs.CreateQuestionPackWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:Quiz_App_LABB3.Dialogs"
+        mc:Ignorable="d"
+        DataContext="{Binding ConfigurationViewModel}"
+        Title="CreateQuestionPackWindow" Height="350" Width="320">
+    <Grid>
+       
+            <StackPanel HorizontalAlignment="Center">
+                <Label Content="Pack Name:" FontWeight="Bold"/>
+                <TextBox Text="{Binding NewPack.Name}" Margin="5" Height="25" Width="250" HorizontalAlignment="Left"/>
+
+                <Label Content="Difficulty" FontWeight="Bold"/>
+                <ComboBox x:Name="myComboBox" Text="{Binding NewPack.Difficulty}" Margin="5" Height="25" Width="150" HorizontalAlignment="Left">
+                    <ComboBoxItem>Easy</ComboBoxItem>
+                    <ComboBoxItem>Medium</ComboBoxItem>
+                    <ComboBoxItem>Hard</ComboBoxItem>
+                </ComboBox>
+
+                <StackPanel Orientation="Horizontal">
+                    <Label Content="Time Limit:" FontWeight="Bold" Width="100"/>
+                <Label x:Name="LimitLabel" Content="{Binding NewPack.TimeLimitInSeconds}" ContentStringFormat="{}{0} seconds" FontWeight="Bold" HorizontalAlignment="Right" Margin="80, 5,5,5" Width="100"/>
+
+            </StackPanel>
+
+            <Slider Width="150"
+ HorizontalAlignment="Left"
+ Margin="5"
+ IsSnapToTickEnabled="True"
+ TickFrequency="5"
+ TickPlacement="BottomRight"
+ Minimum="5"
+ Maximum="60" 
+Value="{Binding NewPack.TimeLimitInSeconds}"
+             />
+
+
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
+                    <Button Content="Cancel" Margin="15,10" Height="20" Width="60" Click="Button_Click"/>
+                    <Button Content="Create" Margin="15,10" Height="20" Width="60" Command="{Binding }"/>
+                </StackPanel>
+
+
+
+            </StackPanel>
+  
+    </Grid>
+</Window>

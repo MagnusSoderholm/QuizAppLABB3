@@ -4,28 +4,91 @@
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Quiz_App_LABB3.View"
-             DataContext="{Binding PlayerViewModel}"
              xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="400">
+             d:DesignHeight="450" d:DesignWidth="800">
+    
     <Grid>
+
         <Grid.RowDefinitions>
-            <RowDefinition Height="30"/>
-            <RowDefinition Height="*"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="120"/>
+            <RowDefinition Height="120"/>
         </Grid.RowDefinitions>
+        
 
-        <StackPanel Orientation="Horizontal" Width="350">
-            <Label Width="300" Content="TEST Question Pack" Margin="0" FontWeight="Bold" VerticalAlignment="Bottom" />
+            <TextBlock x:Name="TimerTextBlock"
+            Grid.Row="0"
+               Height="60"
+               Width="100"
+               FontSize="30"
+               FontWeight="Bold"
+               Text="{Binding ActivePack.TimeLimitInSeconds}"
+               HorizontalAlignment="Right"
+               VerticalAlignment="Center"
+               Margin="5"
+            
+            />
 
-            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom"> 
-                <Button Content="{fa:Icon sliders}" Margin="1,5"/>
-                <Button Content="{fa:Icon plus}" Margin="1,5"/>
-                <Button Content="{fa:Icon minus}" Margin="1,5"/>
-            </StackPanel>
+        <Label x:Name="QuestionLabel"
+            Grid.Row="1" 
+               HorizontalAlignment="Center" 
+               VerticalAlignment="Center" 
+               Content="{Binding ConfigurationViewModel.SelectedItem.Query}"
+               FontSize="25"
+               />
+
+
+       
+            <Label Grid.Row="2"
+               FontSize="15"
+               Content="Question 1 of 4"
+               HorizontalAlignment="Center" 
+               VerticalAlignment="Center"
+                Margin="5"/>
+           
+       
+
+        <StackPanel HorizontalAlignment="Center" 
+                    VerticalAlignment="Center" 
+                    Grid.Row="3" 
+                    Orientation="Horizontal">
+
+            <Button x:Name="ButtonA" 
+                    FontSize="20" 
+                    Content="{Binding Answer1, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" 
+                    Height="100" 
+                    Width="200" 
+                    Margin="10"/>
+            <Button x:Name="ButtonB" 
+                    FontSize="20" 
+                    Content="{Binding Answer2, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" 
+                    Height="100" 
+                    Width="200" 
+                    Margin="10"/>
         </StackPanel>
 
-        <TextBox Grid.Row="1" Text="Testing" Width="380" Height="350"
-                 Margin="5,0,5,5"/>
+        <StackPanel HorizontalAlignment="Center" 
+                    VerticalAlignment="Center" 
+                    Grid.Row="4" 
+                    Orientation="Horizontal">
+            <Button x:Name="ButtonC" 
+                    FontSize="20" 
+                    Content="{Binding Answer3, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" 
+                    Height="100" 
+                    Width="200" 
+                    Margin="10"/>
+            <Button x:Name="ButtonD" 
+                    FontSize="20" 
+                    Content="{Binding Answer4, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" 
+                    Height="100" 
+                    Width="200" 
+                    Margin="10"/>
+        </StackPanel>
+
+
 
         <!--<Button 
             Grid.Row="1"
