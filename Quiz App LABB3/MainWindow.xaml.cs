@@ -21,36 +21,20 @@ namespace Quiz_App_LABB3
             InitializeComponent();
             DataContext = viewModel = new MainWindowViewModel();
 
-            //Loaded += MainWindow_Loaded;
-
+            Loaded += MainWindow_Loaded;
+            Closed += MainWindow_Closed;
         }
 
-        //private async void MainWindow_Loaded(object sender, RoutedEventArgs e)
-        //{
-           
-        //    await viewModel.LoadDataAsync();
-
-        //    //throw new NotImplementedException();
-        //}
-
-        private Visibility _visability;
-
-        public Visibility VisabilityMode
+        private async void MainWindow_Closed(object? sender, EventArgs e)
         {
-            get => _visability;
-            set
-            {
-                _visability = value;
-               
-            }
+
+            await viewModel.SaveDataAsync();
         }
 
-        //private void ConfigurationView_IsVisibleChanged(object sender, DependencyPropertyChangedEventArgs e)
-        //{
-
-        //}    
-
-
+        private async void MainWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            await viewModel.LoadDataAsync();
+        }
 
     }
 

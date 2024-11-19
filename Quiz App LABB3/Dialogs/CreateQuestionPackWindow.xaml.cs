@@ -43,5 +43,10 @@ namespace Quiz_App_LABB3.Dialogs
             //Packs.Add(new QuestionPackViewModel(new QuestionPack("Default New Pack")));
             Close();
         }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
     }
 }

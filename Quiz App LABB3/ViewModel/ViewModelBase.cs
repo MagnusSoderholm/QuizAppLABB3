@@ -9,7 +9,7 @@ using System.Windows;
 
 namespace Quiz_App_LABB3.ViewModel
 {
-    internal class ViewModelBase : INotifyPropertyChanged
+    public class ViewModelBase : INotifyPropertyChanged
     {
 
         public event PropertyChangedEventHandler? PropertyChanged;

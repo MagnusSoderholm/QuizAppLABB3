@@ -10,10 +10,11 @@ using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Input;
 
 namespace Quiz_App_LABB3.ViewModel
 {
-    internal class MainWindowViewModel : ViewModelBase
+    public class MainWindowViewModel : ViewModelBase
     {
 
        
@@ -25,7 +26,6 @@ namespace Quiz_App_LABB3.ViewModel
         public PlayerViewModel PlayerViewModel { get; }
 
         public CreateQuestionPackWindow CreateQuestionPackWindow { get; }
-
 
 
 
@@ -61,8 +61,8 @@ namespace Quiz_App_LABB3.ViewModel
 
         public DelegateCommand AddNewPackCommand { get; }
         public DelegateCommand DeletePackCommand { get; }
+        public DelegateCommand UpdateButtonCommand { get; }
         public DelegateCommand CreateQuestionPackWindowCommand { get; }
-
         public DelegateCommand ShowPlayerViewCommand { get; }
 
         public DelegateCommand ShowConfigurationViewCommand { get; }
@@ -78,22 +78,15 @@ namespace Quiz_App_LABB3.ViewModel
 
             AddNewPackCommand = new DelegateCommand(AddNewPack);
             DeletePackCommand = new DelegateCommand(DeletePack, CanDeletePack);
-            CreateQuestionPackWindowCommand = new DelegateCommand(CreatePack);
+            
             ShowPlayerViewCommand = new DelegateCommand(ShowPlayerView);
             ShowConfigurationViewCommand = new DelegateCommand(ShowConfigurationView);
             SetFullScreenCommand = new DelegateCommand(FullScreen);
 
-
-           
-
-            IsConfigurationVisible = true;
-            IsPlayerVisible = false;
-
-
-
+            CreateQuestionPackWindowCommand = new DelegateCommand(CreatePack);
             ActivePack = new QuestionPackViewModel(new QuestionPack($"Default Question Pack ({Difficulty.Medium})"));
             NewPack = new QuestionPackViewModel(new QuestionPack($"New Question Pack ({Difficulty.Medium})"));
-
+            UpdateButtonCommand = new DelegateCommand(UpdateButton);
             ConfigurationViewModel = new ConfigurationViewModel(this);
             PlayerViewModel = new PlayerViewModel(this);
 
@@ -101,8 +94,8 @@ namespace Quiz_App_LABB3.ViewModel
 
             Packs.Add(new QuestionPackViewModel(new QuestionPack($"Default New Pack ({Difficulty.Medium})")));
 
-            //ActivePack = Packs.FirstOrDefault();
-            //ActivePack.Questions.Add(new Question("Question", "Answer1", "Answer2", "Answer3", "Answer4"));
+            ActivePack = Packs.FirstOrDefault();
+            ActivePack.Questions.Add(new Question("New Question", "", "", "", ""));
         }
 
         private bool CanDeletePack(object? arg) => Packs.Count > 1;
@@ -116,10 +109,11 @@ namespace Quiz_App_LABB3.ViewModel
 
         private void AddNewPack(object obj)
         {
-
-            Packs.Add(new QuestionPackViewModel(new QuestionPack("Default Name", Difficulty.Medium, 30)));
+     
+            var newPack = new QuestionPackViewModel(new QuestionPack("Default Name", Difficulty.Medium, 30));
+            newPack.Questions.Add(new Question("Sample Question", "Correct", "Incorrect1", "Incorrect2", "Incorrect3"));
+            Packs.Add(newPack);
             DeletePackCommand.RaiseCanExecuteChanged();
-
         }
 
         private void CreatePack(object obj)
@@ -146,7 +140,7 @@ namespace Quiz_App_LABB3.ViewModel
         //    };
         //}
 
-        private bool _isPlayerVisible;
+        private bool _isPlayerVisible = false;
 
         public bool IsPlayerVisible
         {
@@ -156,20 +150,21 @@ namespace Quiz_App_LABB3.ViewModel
                 if (_isPlayerVisible == value) return;
 
                 _isPlayerVisible = value;
-                RaisePropertyChanged();
+                RaisePropertyChanged(nameof(IsPlayerVisible));
                 RaisePropertyChanged(nameof(IsConfigurationVisible));
             }
         }
 
+        private bool _isConfigurationMode = true;
         public bool IsConfigurationVisible
         {
-            get => !_isPlayerVisible;
+            get => _isConfigurationMode;
             set
             {
-                if (_isPlayerVisible == !value) return;
+                if (_isConfigurationMode == value) return;
 
-                _isPlayerVisible = !value;
-                RaisePropertyChanged();
+                _isConfigurationMode = value;
+                RaisePropertyChanged(nameof(IsConfigurationVisible));
                 RaisePropertyChanged(nameof(IsPlayerVisible));
             }
         }
@@ -177,68 +172,82 @@ namespace Quiz_App_LABB3.ViewModel
         private void ShowPlayerView(object obj)
         {
             IsPlayerVisible = true;
+            IsConfigurationVisible = false;
+
+            PlayerViewModel.StartGame();
 
         }
 
         private void ShowConfigurationView(object ojb)
         {
             IsConfigurationVisible = true;
-
+            IsPlayerVisible = false;
+            
         }
 
-        
-        //public async Task LoadDataAsync()
-        //{
-        //    var JsonHandler = new Quiz_App_LABB3.JSON.Json();
-        //    List<QuestionPack> loadedPacks = await JsonHandler.LoadJson();
 
-        //    foreach (var pack in loadedPacks)
-        //    {
-        //        Packs.Add(new QuestionPackViewModel(pack));
-        //    }
-        //    if (Packs.Any())
-        //    {
-        //        ActivePack = Packs.First();
-        //    }
+        public async Task LoadDataAsync()
+        {
+            var JsonHandler = new Quiz_App_LABB3.Json();
+            List<QuestionPack> loadedPacks = await JsonHandler.LoadQuestionPack();
 
-        //    ConfigurationViewModel.AddQuestionCommand.RaiseCanExecuteChanged();
+            // Lägger till validerade packen
+            foreach (var pack in loadedPacks)
+            {
+                if (pack != null && !string.IsNullOrWhiteSpace(pack.Name))
+                {
+                    pack.Questions ??= new List<Question>(); // Säkerställ att listan inte är null
+                    Packs.Add(new QuestionPackViewModel(pack));
+                }
+                else
+                {
+                    Debug.WriteLine("Skipping invalid QuestionPack.");
+                }
+            }
 
-        //}
-        //public async Task SaveDataAsync()
-        //{
-        //    var JsonHandler = new Quiz_App_LABB3.JSON.json();
+            // Om inga pack finns, skapa ett standardpaket
+            if (!Packs.Any())
+            {
+                var defaultPack = new QuestionPack("Default QuestionPack");
+                Packs.Add(new QuestionPackViewModel(defaultPack));
+            }
 
-        //    List<QuestionPack> packsToSave = Packs.Select(ViewModel => new QuestionPack(
-        //        viewModel.Name;
-        //        viewModel.Difficulty;
-        //        viewModel.TimeLimitInSeconds);
-        //    {
-        //        Questions = viewModel.Questions.ToList();
-        //    }       
-        //    ).ToList);
-
-        //}
+            ActivePack = Packs.FirstOrDefault();
+        }
 
 
-        //public async Task LoadPacks()
-        //{
-        //    var manager = new Json();
-        //    Packs = await manager.LoadQuestionPack();
+        public async Task SaveDataAsync()
+        {
+            var JsonHandler = new Quiz_App_LABB3.Json();
 
-        //    if (Packs == null)
-        //    {
-        //        ActivePack = new QuestionPackViewModel(new QuestionPack("My Question Pack"));
-        //        Packs.Add(ActivePack);
-        //    }
-        //    else
-        //    {
-        //        ActivePack = Packs[0];
+            // Skapa en lista med QuestionPack-objekt för att spara
+            List<QuestionPack> packsToSave = Packs
+                .Where(viewModel => viewModel != null && viewModel.Questions.Any())  // Kontrollera att frågor finns
+                .Select(viewModel => new QuestionPack(
+                    viewModel.Name,
+                    viewModel.Difficulty,
+                    viewModel.TimeLimitInSeconds)
+                {
+                    Questions = viewModel.Questions.ToList()  // Här konverterar vi frågorna till en lista
+                })
+                .ToList();
 
-        //    }
-        //}
+            if (packsToSave.Any())
+            {
+                await JsonHandler.SaveQuestionPack(packsToSave);  // Spara packen till filen
+            }
+            else
+            {
+                Debug.WriteLine("No valid QuestionPacks to save.");
+            }
+        }
 
+       
 
-
-
+        private void UpdateButton(object obj)
+        {
+            
+            UpdateButtonCommand.RaiseCanExecuteChanged(); // Gör att när UpdateButton inte kan tyckas på mer så blir knappen "otryckbar"
+        }
     }
 }

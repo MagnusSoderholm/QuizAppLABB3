@@ -3,29 +3,44 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:Quiz_App_LABB3" xmlns:view="clr-namespace:Quiz_App_LABB3.View"
+        xmlns:local="clr-namespace:Quiz_App_LABB3" 
+        xmlns:view="clr-namespace:Quiz_App_LABB3.View"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="450" Width="800"
+        DataContext="{Binding RelativeSource={RelativeSource Self}}">
+
     <Window.InputBindings>
-        <KeyBinding Key="U" Modifiers="Ctrl" Command="{Binding PlayerViewModel.UpdateButtonCommand}" />
+        <KeyBinding Key="U" Modifiers="Ctrl" Command="{Binding}" />
     </Window.InputBindings>
+
     <Window.Resources>
         <BooleanToVisibilityConverter x:Key="boolToVisibilityConverter" />
     </Window.Resources>
-    
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto"/>
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
-        
+
+        <!-- MenuView should always be visible -->
         <view:MenuView Grid.Row="0" />
 
         <WrapPanel Orientation="Horizontal" Grid.Row="1">
-            <view:PlayerView Margin="10" Visibility="{Binding IsPlayerVisible, Converter={StaticResource boolToVisibilityConverter}}"/>
-            <view:ConfigurationView Margin="10" Visibility="{Binding IsConfigurationVisible, Converter={StaticResource boolToVisibilityConverter}}"/>
-        </WrapPanel>
-      
+            <!-- ConfigurationView should be visible only when IsConfigurationVisible is true -->
+            <view:ConfigurationView 
+                Grid.Row="1" 
+                Visibility="{Binding DataContext.IsConfigurationVisible, RelativeSource={RelativeSource AncestorType=Window}, Converter={StaticResource boolToVisibilityConverter}}" />
 
+            <!-- PlayerView should be visible only when IsPlayerVisible is true -->
+            <view:PlayerView 
+                Grid.Row="1" 
+                Visibility="{Binding DataContext.IsPlayerVisible, RelativeSource={RelativeSource AncestorType=Window}, Converter={StaticResource boolToVisibilityConverter}}"/>
+        </WrapPanel>
     </Grid>
 </Window>
+
+
+
+
+

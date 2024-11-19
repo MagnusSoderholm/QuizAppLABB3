@@ -5,7 +5,6 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Quiz_App_LABB3.Dialogs"
         mc:Ignorable="d"
-        DataContext="{Binding ConfigurationViewModel}"
         Title="CreateQuestionPackWindow" Height="350" Width="320">
     <Grid>
        
@@ -40,7 +39,7 @@ Value="{Binding NewPack.TimeLimitInSeconds}"
 
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Center">
                     <Button Content="Cancel" Margin="15,10" Height="20" Width="60" Click="Button_Click"/>
-                    <Button Content="Create" Margin="15,10" Height="20" Width="60" Command="{Binding }"/>
+                    <Button Content="Create" Margin="15,10" Height="20" Width="60" Command="{Binding AddNewPackCommand}" Click="Button_Click_1"/>
                 </StackPanel>
 
 

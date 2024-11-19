@@ -8,30 +8,28 @@ using System.Threading.Tasks;
 
 namespace Quiz_App_LABB3.Model
 {
-    internal class Question
+    public class Question
     {
         [JsonConstructor]
-        public Question(string query, string correctAnswer,
-            string[] incorrectAnswers)
+        public Question(string query, string correctAnswer, List<string> incorrectAnswers)
         {
             Query = query;
             CorrectAnswer = correctAnswer;
             IncorrectAnswers = incorrectAnswers;
+
         }
 
-        public Question(string query, string correctAnswer,
-            string incorrectAnswer1, string incorrectAnswer2, string incorrectAnswer3)
+        public Question(string query, string correctAnswer, string incorrectAnswer1, string incorrectAnswer2, string incorrectAnswer3)
         {
             Query = query;
             CorrectAnswer = correctAnswer;
-            IncorrectAnswers = new string[3] { incorrectAnswer1, incorrectAnswer2, incorrectAnswer3 };
-
-            
+            IncorrectAnswers = new List<string> { incorrectAnswer1, incorrectAnswer2, incorrectAnswer3 };
         }
-       
 
         public string Query { get; set; }
-        public string CorrectAnswer { get; set; }
-        public string[] IncorrectAnswers { get; set; }
+        public string CorrectAnswer { get; set; } = new string("");
+        public List<string> IncorrectAnswers { get; set; } = new List<string>();
+
     }
+
 }

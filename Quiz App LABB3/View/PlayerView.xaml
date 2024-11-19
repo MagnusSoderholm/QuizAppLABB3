@@ -1,13 +1,15 @@
 ﻿<UserControl x:Class="Quiz_App_LABB3.View.PlayerView"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Quiz_App_LABB3.View"
              xmlns:fa="http://schemas.awesome.incremented/wpf/xaml/fontawesome.sharp"
              mc:Ignorable="d" 
+             DataContext="{Binding PlayerViewModel}" 
              d:DesignHeight="450" d:DesignWidth="800">
-    
+
     <Grid>
 
         <Grid.RowDefinitions>
@@ -17,15 +19,15 @@
             <RowDefinition Height="120"/>
             <RowDefinition Height="120"/>
         </Grid.RowDefinitions>
-        
 
-            <TextBlock x:Name="TimerTextBlock"
+
+        <Label
             Grid.Row="0"
                Height="60"
                Width="100"
                FontSize="30"
                FontWeight="Bold"
-               Text="{Binding ActivePack.TimeLimitInSeconds}"
+               Content="{Binding ShowRemainingTime,Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"
                HorizontalAlignment="Right"
                VerticalAlignment="Center"
                Margin="5"
@@ -33,23 +35,13 @@
             />
 
         <Label x:Name="QuestionLabel"
-            Grid.Row="1" 
-               HorizontalAlignment="Center" 
-               VerticalAlignment="Center" 
-               Content="{Binding ConfigurationViewModel.SelectedItem.Query}"
-               FontSize="25"
-               />
+       Grid.Row="1" 
+       HorizontalAlignment="Center" 
+       VerticalAlignment="Center" 
+       Content="{Binding QuestionText}"
+       FontSize="25"/>
 
 
-       
-            <Label Grid.Row="2"
-               FontSize="15"
-               Content="Question 1 of 4"
-               HorizontalAlignment="Center" 
-               VerticalAlignment="Center"
-                Margin="5"/>
-           
-       
 
         <StackPanel HorizontalAlignment="Center" 
                     VerticalAlignment="Center" 
@@ -59,12 +51,16 @@
             <Button x:Name="ButtonA" 
                     FontSize="20" 
                     Content="{Binding Answer1, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" 
+                    Command="{Binding AnswerCommand, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" 
+                    CommandParameter="{Binding Answer1, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
                     Height="100" 
                     Width="200" 
                     Margin="10"/>
             <Button x:Name="ButtonB" 
                     FontSize="20" 
-                    Content="{Binding Answer2, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" 
+                    Content="{Binding Answer2, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
+                    Command="{Binding AnswerCommand, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" 
+                    CommandParameter="{Binding Answer2, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
                     Height="100" 
                     Width="200" 
                     Margin="10"/>
@@ -77,12 +73,16 @@
             <Button x:Name="ButtonC" 
                     FontSize="20" 
                     Content="{Binding Answer3, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" 
+                    Command="{Binding AnswerCommand, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" 
+                    CommandParameter="{Binding Answer3, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
                     Height="100" 
                     Width="200" 
                     Margin="10"/>
             <Button x:Name="ButtonD" 
                     FontSize="20" 
                     Content="{Binding Answer4, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" 
+                    Command="{Binding AnswerCommand, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}" 
+                    CommandParameter="{Binding Answer4, UpdateSourceTrigger=PropertyChanged, Mode=OneWay}"
                     Height="100" 
                     Width="200" 
                     Margin="10"/>
@@ -98,6 +98,6 @@
             Margin="10"
             Command="{Binding UpdateButtonCommand}"
         />-->
-        
+
     </Grid>
 </UserControl>
