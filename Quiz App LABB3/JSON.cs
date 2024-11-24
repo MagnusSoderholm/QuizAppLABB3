@@ -26,7 +26,7 @@ namespace Quiz_App_LABB3
 
         public async Task SaveQuestionPack(List<QuestionPack> questionPack)
         {
-            string folderName = @"QuizAppLABB3";
+            string folderName = @"NewQuizAppLABB3";
             string folderPath = Path.Combine(filePath, folderName);
             string fullPath = Path.Combine(folderPath, "questions.Json");
             var options = new JsonSerializerOptions
@@ -46,7 +46,7 @@ namespace Quiz_App_LABB3
 
         public async Task<List<QuestionPack>> LoadQuestionPack()
         {
-            string folderName = @"QuizAppLABB3";
+            string folderName = @"NewQuizAppLABB3";
             string folderPath = Path.Combine(filePath, folderName);
             string fullPath = Path.Combine(folderPath, "questions.Json");
 

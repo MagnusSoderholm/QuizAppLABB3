@@ -61,6 +61,7 @@ namespace Quiz_App_LABB3.ViewModel
 
         public DelegateCommand AddNewPackCommand { get; }
         public DelegateCommand DeletePackCommand { get; }
+        public DelegateCommand SetActivePackCommand { get; }
         public DelegateCommand UpdateButtonCommand { get; }
         public DelegateCommand CreateQuestionPackWindowCommand { get; }
         public DelegateCommand ShowPlayerViewCommand { get; }
@@ -71,6 +72,8 @@ namespace Quiz_App_LABB3.ViewModel
 
         public DelegateCommand SetFullScreenCommand { get; }
 
+        
+
 
         public MainWindowViewModel()
         {
@@ -78,6 +81,7 @@ namespace Quiz_App_LABB3.ViewModel
 
             AddNewPackCommand = new DelegateCommand(AddNewPack);
             DeletePackCommand = new DelegateCommand(DeletePack, CanDeletePack);
+            SetActivePackCommand = new DelegateCommand(SetActivePack);
             
             ShowPlayerViewCommand = new DelegateCommand(ShowPlayerView);
             ShowConfigurationViewCommand = new DelegateCommand(ShowConfigurationView);
@@ -98,6 +102,11 @@ namespace Quiz_App_LABB3.ViewModel
             ActivePack.Questions.Add(new Question("New Question", "", "", "", ""));
         }
 
+        private void SetActivePack(object obj)
+        {
+            ActivePack = (QuestionPackViewModel)obj;
+        }
+
         private bool CanDeletePack(object? arg) => Packs.Count > 1;
         
 
@@ -110,10 +119,14 @@ namespace Quiz_App_LABB3.ViewModel
         private void AddNewPack(object obj)
         {
      
-            var newPack = new QuestionPackViewModel(new QuestionPack("Default Name", Difficulty.Medium, 30));
+            var newPack = new QuestionPackViewModel(new QuestionPack("New Pack", Difficulty.Medium, 30));
             newPack.Questions.Add(new Question("Sample Question", "Correct", "Incorrect1", "Incorrect2", "Incorrect3"));
             Packs.Add(newPack);
+            ActivePack = newPack;
+
+           
             DeletePackCommand.RaiseCanExecuteChanged();
+            
         }
 
         private void CreatePack(object obj)
@@ -191,12 +204,12 @@ namespace Quiz_App_LABB3.ViewModel
             var JsonHandler = new Quiz_App_LABB3.Json();
             List<QuestionPack> loadedPacks = await JsonHandler.LoadQuestionPack();
 
-            // Lägger till validerade packen
+            
             foreach (var pack in loadedPacks)
             {
                 if (pack != null && !string.IsNullOrWhiteSpace(pack.Name))
                 {
-                    pack.Questions ??= new List<Question>(); // Säkerställ att listan inte är null
+                    pack.Questions ??= new List<Question>(); 
                     Packs.Add(new QuestionPackViewModel(pack));
                 }
                 else
@@ -205,7 +218,7 @@ namespace Quiz_App_LABB3.ViewModel
                 }
             }
 
-            // Om inga pack finns, skapa ett standardpaket
+            
             if (!Packs.Any())
             {
                 var defaultPack = new QuestionPack("Default QuestionPack");
@@ -220,21 +233,21 @@ namespace Quiz_App_LABB3.ViewModel
         {
             var JsonHandler = new Quiz_App_LABB3.Json();
 
-            // Skapa en lista med QuestionPack-objekt för att spara
+            
             List<QuestionPack> packsToSave = Packs
-                .Where(viewModel => viewModel != null && viewModel.Questions.Any())  // Kontrollera att frågor finns
+                .Where(viewModel => viewModel != null && viewModel.Questions.Any())  
                 .Select(viewModel => new QuestionPack(
                     viewModel.Name,
                     viewModel.Difficulty,
                     viewModel.TimeLimitInSeconds)
                 {
-                    Questions = viewModel.Questions.ToList()  // Här konverterar vi frågorna till en lista
+                    Questions = viewModel.Questions.ToList() 
                 })
                 .ToList();
 
             if (packsToSave.Any())
             {
-                await JsonHandler.SaveQuestionPack(packsToSave);  // Spara packen till filen
+                await JsonHandler.SaveQuestionPack(packsToSave); 
             }
             else
             {

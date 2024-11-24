@@ -23,16 +23,16 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <!-- MenuView should always be visible -->
+       
         <view:MenuView Grid.Row="0" />
 
         <WrapPanel Orientation="Horizontal" Grid.Row="1">
-            <!-- ConfigurationView should be visible only when IsConfigurationVisible is true -->
+            
             <view:ConfigurationView 
                 Grid.Row="1" 
                 Visibility="{Binding DataContext.IsConfigurationVisible, RelativeSource={RelativeSource AncestorType=Window}, Converter={StaticResource boolToVisibilityConverter}}" />
 
-            <!-- PlayerView should be visible only when IsPlayerVisible is true -->
+            
             <view:PlayerView 
                 Grid.Row="1" 
                 Visibility="{Binding DataContext.IsPlayerVisible, RelativeSource={RelativeSource AncestorType=Window}, Converter={StaticResource boolToVisibilityConverter}}"/>

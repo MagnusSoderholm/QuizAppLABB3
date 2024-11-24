@@ -46,7 +46,7 @@ namespace Quiz_App_LABB3.ViewModel
         public PlayerViewModel()
         {
             
-            CurrentQuestionIndex = 0; // Starta på första frågan
+            CurrentQuestionIndex = 0; 
         }
 
         public PlayerViewModel(MainWindowViewModel? mainWindowViewModel)
@@ -121,7 +121,7 @@ namespace Quiz_App_LABB3.ViewModel
             {
                 _currentQuestionIndex = value;
                 RaisePropertyChanged();
-                DisplayNextQuestion(); // Uppdatera frågan varje gång index ändras
+                DisplayNextQuestion();
             }
         }
 
@@ -161,30 +161,29 @@ namespace Quiz_App_LABB3.ViewModel
 
         private void Timer_Tick(object? sender, EventArgs e)
         {
-            // Uppdatera tiden och bind den till UI:et.
+            
             if (TimeRemaining > 0)
             {
-                TimeRemaining--; // Minska tid
+                TimeRemaining--;
             }
             else
             {
-                _timer.Stop(); // Stoppa timern
+                _timer.Stop();
 
-                // Om det finns fler frågor, gå vidare, annars avsluta quizen.
+                
                 if (CurrentQuestionIndex < (ActivePack?.Questions.Count ?? 0) - 1)
                 {
                     MessageBox.Show("Time is up! Next question", "Time is up!", MessageBoxButton.OK, MessageBoxImage.Information);
                     GoToNextQuestion();
 
-                    // Återställ och starta timern för nästa fråga
                     ResetTimer();
                 }
                 else
                 {
-                    // Quiz är klart
                     MessageBox.Show("You've completed the quiz!", "Quiz Finished", MessageBoxButton.OK, MessageBoxImage.Information);
-                    _mainWindowViewModel.IsPlayerVisible = false;  // Dölj spelaren
-                    _mainWindowViewModel.IsConfigurationVisible = true; // Visa konfiguration
+                    _mainWindowViewModel.IsPlayerVisible = false;  
+                    _mainWindowViewModel.IsConfigurationVisible = true;
+    
                 }
             }
         }
