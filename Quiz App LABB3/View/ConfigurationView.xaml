@@ -30,7 +30,7 @@
             <Label Width="300" 
                    Content="{Binding ActivePack.Name}" 
                    Margin="2" 
-                   FontWeight="Bold" />
+                   FontWeight="Bold"  />
 
             <StackPanel Margin="25,0,0,0" Orientation="Horizontal" HorizontalAlignment="Right" VerticalAlignment="Bottom">
                 <Button Content="{fa:Icon sliders}" 

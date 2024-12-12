@@ -51,10 +51,8 @@ namespace Quiz_App_LABB3.ViewModel
 
             set
             {
-
                 _newPack = value;
                 RaisePropertyChanged();
-                //ConfigurationViewModel.RaisePropertyChanged("ActivePack");
             }
         }
 
@@ -96,15 +94,27 @@ namespace Quiz_App_LABB3.ViewModel
 
             Packs = new ObservableCollection<QuestionPackViewModel>();
 
-            Packs.Add(new QuestionPackViewModel(new QuestionPack($"Default New Pack ({Difficulty.Medium})")));
+           // Packs.Add(new QuestionPackViewModel(new QuestionPack($"Default New Pack ({Difficulty.Medium})")));
 
             ActivePack = Packs.FirstOrDefault();
-            ActivePack.Questions.Add(new Question("New Question", "", "", "", ""));
+           // ActivePack.Questions.Add(new Question("New Question", "", "", "", ""));
         }
+
+
+
+
+
 
         private void SetActivePack(object obj)
         {
-            ActivePack = (QuestionPackViewModel)obj;
+            
+            if (obj is QuestionPackViewModel selectedPack)
+            {
+                ActivePack = selectedPack;
+
+               
+                ConfigurationViewModel.RaisePropertyChanged(nameof(ConfigurationViewModel.ActivePack));
+            }
         }
 
         private bool CanDeletePack(object? arg) => Packs.Count > 1;
@@ -145,13 +155,7 @@ namespace Quiz_App_LABB3.ViewModel
             }
         }
 
-        //private void RandomAnswers(object obj)
-        //{
-        //    List<string> RandomList = new List<string>
-        //    {
-        //        ActivePack.
-        //    };
-        //}
+     
 
         private bool _isPlayerVisible = false;
 
@@ -255,12 +259,10 @@ namespace Quiz_App_LABB3.ViewModel
             }
         }
 
-       
-
         private void UpdateButton(object obj)
         {
             
-            UpdateButtonCommand.RaiseCanExecuteChanged(); // Gör att när UpdateButton inte kan tyckas på mer så blir knappen "otryckbar"
+            UpdateButtonCommand.RaiseCanExecuteChanged();
         }
     }
 }

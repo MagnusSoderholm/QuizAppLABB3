@@ -81,7 +81,7 @@
                           Command="{Binding ConfigurationViewModel.EditOptionsCommand}" />
                 
                 
-                <!--<MenuItem Header="Update Button" Command="{Binding PlayerViewModel.UpdateButtonCommand}"/>-->
+               
 
             </MenuItem>
 
