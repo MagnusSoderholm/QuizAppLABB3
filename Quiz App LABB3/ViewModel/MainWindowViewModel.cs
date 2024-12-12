@@ -40,7 +40,7 @@ namespace Quiz_App_LABB3.ViewModel
 
                 _activePack = value;
                 RaisePropertyChanged();
-                //ConfigurationViewModel.RaisePropertyChanged("ActivePack");
+                ConfigurationViewModel?.RaisePropertyChanged("ActivePack");
             } 
         }
 
@@ -123,6 +123,7 @@ namespace Quiz_App_LABB3.ViewModel
         private void DeletePack(object obj)
         {
            Packs.Remove(ActivePack);
+            ActivePack = Packs.FirstOrDefault();
             DeletePackCommand.RaiseCanExecuteChanged();
         }
 
@@ -141,7 +142,7 @@ namespace Quiz_App_LABB3.ViewModel
 
         private void CreatePack(object obj)
         {
-            //Packs.Add(new QuestionPackViewModel(new QuestionPack("Default Name", Difficulty.Medium, 30)));
+            
             DeletePackCommand.RaiseCanExecuteChanged();
             var window = new CreateQuestionPackWindow();
             window.ShowDialog();
