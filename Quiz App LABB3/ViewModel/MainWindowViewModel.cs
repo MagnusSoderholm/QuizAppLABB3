@@ -129,8 +129,8 @@ namespace Quiz_App_LABB3.ViewModel
         private void AddNewPack(object obj)
         {
      
-            var newPack = new QuestionPackViewModel(new QuestionPack("New Pack", Difficulty.Medium, 30));
-            newPack.Questions.Add(new Question("Sample Question", "Correct", "Incorrect1", "Incorrect2", "Incorrect3"));
+            var newPack = new QuestionPackViewModel(new QuestionPack("New QuestionPack", Difficulty.Medium, 30));
+            newPack.Questions.Add(new Question("New Question", "", "", "", ""));
             Packs.Add(newPack);
             ActivePack = newPack;
 
@@ -141,7 +141,7 @@ namespace Quiz_App_LABB3.ViewModel
 
         private void CreatePack(object obj)
         {
-            Packs.Add(new QuestionPackViewModel(new QuestionPack("Default Name", Difficulty.Medium, 30)));
+            //Packs.Add(new QuestionPackViewModel(new QuestionPack("Default Name", Difficulty.Medium, 30)));
             DeletePackCommand.RaiseCanExecuteChanged();
             var window = new CreateQuestionPackWindow();
             window.ShowDialog();
